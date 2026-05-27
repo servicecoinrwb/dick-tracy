@@ -1,1 +1,1549 @@
-l
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DICK TRACY — THE ETERNAL DETECTIVE</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Special+Elite&family=Black+Han+Sans&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD700;
+    --black: #0a0a0a;
+    --red: #CC1100;
+    --cream: #FFF8E7;
+    --ink: #1a1000;
+    --gray: #888;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Special Elite', cursive;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* ── HALFTONE UTILITY ── */
+  .halftone {
+    background-image: radial-gradient(circle, var(--yellow) 1.5px, transparent 1.5px);
+    background-size: 12px 12px;
+  }
+  .halftone-red {
+    background-image: radial-gradient(circle, var(--red) 1px, transparent 1px);
+    background-size: 8px 8px;
+  }
+  .halftone-sm {
+    background-image: radial-gradient(circle, rgba(255,215,0,0.25) 1px, transparent 1px);
+    background-size: 8px 8px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: var(--yellow);
+    border-bottom: 5px solid var(--black);
+    padding: 0 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 52px;
+    box-shadow: 0 4px 0 var(--red);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--black);
+    letter-spacing: 4px;
+    text-shadow: 3px 3px 0 var(--red);
+  }
+  nav ul { list-style: none; display: flex; gap: 0; }
+  nav ul li a {
+    display: block;
+    padding: 0 16px;
+    height: 52px;
+    line-height: 52px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--black);
+    text-decoration: none;
+    border-left: 3px solid var(--black);
+    transition: background 0.15s, color 0.15s;
+  }
+  nav ul li a:hover { background: var(--black); color: var(--yellow); }
+  .nav-badge {
+    background: var(--red);
+    color: var(--yellow);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border: 2px solid var(--black);
+    border-radius: 2px;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    background: var(--black);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    padding-top: 52px;
+  }
+
+  /* Spotlight */
+  #hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 70% at 50% 40%, rgba(255,215,0,0.12) 0%, transparent 70%);
+    animation: spotlight 6s ease-in-out infinite alternate;
+  }
+  @keyframes spotlight {
+    from { background-position: 40% 40%; transform: scale(1); }
+    to   { background-position: 60% 50%; transform: scale(1.1); }
+  }
+
+  /* Rain streaks */
+  .rain { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .rain span {
+    position: absolute; top: -100px;
+    width: 1px; background: rgba(255,215,0,0.15);
+    animation: fall linear infinite;
+  }
+  @keyframes fall { to { transform: translateY(110vh); } }
+
+  /* City skyline silhouette */
+  .skyline {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 220px; pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative; z-index: 5;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 8px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 15vw, 180px);
+    line-height: 0.88;
+    color: var(--yellow);
+    text-shadow: 8px 8px 0 var(--red), 16px 16px 0 rgba(0,0,0,0.5);
+    letter-spacing: 4px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-sub {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 5vw, 56px);
+    color: var(--cream);
+    letter-spacing: 12px;
+    margin-top: 8px;
+    animation: fadeUp 0.8s 0.4s ease both;
+    text-shadow: 2px 2px 0 var(--black);
+  }
+
+  .hero-divider {
+    width: 200px; height: 5px;
+    background: linear-gradient(90deg, transparent, var(--red), var(--yellow), var(--red), transparent);
+    margin: 24px auto;
+    animation: fadeUp 0.8s 0.6s ease both;
+  }
+
+  .hero-quote {
+    font-size: 16px;
+    color: rgba(255,248,231,0.7);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-style: italic;
+    animation: fadeUp 0.8s 0.8s ease both;
+  }
+
+  .hero-since {
+    margin-top: 28px;
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--black);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 6px;
+    padding: 8px 28px;
+    border: 4px solid var(--black);
+    box-shadow: 5px 5px 0 var(--red);
+    animation: fadeUp 0.8s 1s ease both;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .hero-since:hover { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--red); }
+
+  /* Hat silhouette SVG */
+  .hero-hat {
+    position: absolute;
+    top: 80px; right: 6%;
+    width: min(320px, 35vw);
+    opacity: 0.08;
+    animation: float 8s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    background: var(--red);
+    border-top: 4px solid var(--black);
+    border-bottom: 4px solid var(--black);
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 10px 0;
+  }
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 30s linear infinite;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: var(--yellow);
+    text-shadow: 1px 1px 0 var(--black);
+  }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── SECTIONS GENERAL ── */
+  section { padding: 80px 0; }
+  .section-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── ABOUT — COMIC PANELS ── */
+  #about { background: var(--cream); color: var(--black); }
+  #about .section-title { color: var(--black); text-shadow: 4px 4px 0 var(--yellow); }
+  #about .section-label { color: var(--red); }
+
+  .panels-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 0;
+    border: 5px solid var(--black);
+    margin-top: 40px;
+    box-shadow: 8px 8px 0 var(--black);
+  }
+
+  .panel {
+    border: 3px solid var(--black);
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+    background: var(--cream);
+    transition: transform 0.2s;
+  }
+  .panel:hover { transform: scale(1.01); z-index: 2; }
+  .panel.wide { grid-column: span 2; }
+  .panel.tall { grid-row: span 2; }
+  .panel.yellow-bg { background: var(--yellow); }
+  .panel.black-bg  { background: var(--black); color: var(--cream); }
+  .panel.red-bg    { background: var(--red); color: var(--yellow); }
+
+  .panel-num {
+    position: absolute; top: 8px; left: 10px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px; letter-spacing: 2px;
+    opacity: 0.35;
+    color: var(--black);
+  }
+  .panel.black-bg .panel-num, .panel.red-bg .panel-num { color: var(--cream); opacity: 0.4; }
+
+  .panel-caption {
+    background: var(--yellow);
+    color: var(--black);
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 3px 8px;
+    display: inline-block;
+    margin-bottom: 10px;
+    border: 2px solid var(--black);
+  }
+  .panel.black-bg .panel-caption { background: var(--red); color: var(--yellow); }
+  .panel.red-bg .panel-caption   { background: var(--black); color: var(--yellow); }
+
+  .panel h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    line-height: 1;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .panel p { font-size: 14px; line-height: 1.65; }
+
+  .speech-bubble {
+    background: white;
+    border: 3px solid var(--black);
+    border-radius: 12px 12px 12px 2px;
+    padding: 12px 16px;
+    font-family: 'Special Elite', cursive;
+    font-size: 15px;
+    line-height: 1.5;
+    position: relative;
+    margin-top: 12px;
+    box-shadow: 3px 3px 0 var(--black);
+  }
+  .speech-bubble::after {
+    content: '';
+    position: absolute; bottom: -14px; left: 18px;
+    border-left: 10px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 14px solid var(--black);
+  }
+  .speech-bubble::before {
+    content: '';
+    position: absolute; bottom: -10px; left: 19px;
+    border-left: 9px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 13px solid white;
+    z-index: 1;
+  }
+
+  /* big stat */
+  .stat-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    line-height: 1;
+    color: var(--yellow);
+    text-shadow: 4px 4px 0 var(--black);
+  }
+  .panel.yellow-bg .stat-big { color: var(--black); text-shadow: 4px 4px 0 var(--red); }
+
+  .panel-icon { font-size: 56px; display: block; margin-bottom: 8px; line-height: 1; }
+
+  /* ── VILLAINS ── */
+  #villains {
+    background: var(--black);
+    position: relative; overflow: hidden;
+  }
+  #villains::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(204,17,0,0.08) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+  #villains .section-title { color: var(--yellow); text-shadow: 4px 4px 0 var(--red); }
+
+  .villains-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0;
+    border: 5px solid var(--yellow);
+    margin-top: 40px;
+    box-shadow: 8px 8px 0 var(--red);
+  }
+
+  .villain-card {
+    border: 3px solid rgba(255,215,0,0.3);
+    padding: 28px 20px 24px;
+    position: relative;
+    transition: all 0.2s;
+    cursor: default;
+    overflow: hidden;
+  }
+  .villain-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--red);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease;
+    z-index: 0;
+  }
+  .villain-card:hover::before { transform: scaleY(1); }
+  .villain-card:hover { border-color: var(--red); }
+  .villain-card * { position: relative; z-index: 1; }
+
+  .villain-mug {
+    font-size: 52px; display: block;
+    margin-bottom: 12px; line-height: 1;
+    filter: grayscale(0.3);
+    transition: transform 0.3s;
+  }
+  .villain-card:hover .villain-mug { transform: scale(1.15) rotate(-5deg); }
+
+  .villain-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 1px;
+    color: var(--yellow);
+    text-shadow: 2px 2px 0 var(--black);
+    transition: color 0.2s;
+  }
+  .villain-card:hover .villain-name { color: var(--yellow); text-shadow: 2px 2px 0 rgba(0,0,0,0.5); }
+
+  .villain-alias {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gray);
+    margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+  .villain-card:hover .villain-alias { color: rgba(255,248,231,0.7); }
+
+  .villain-rap {
+    font-size: 11px;
+    color: rgba(255,248,231,0.6);
+    line-height: 1.5;
+    transition: color 0.2s;
+  }
+  .villain-card:hover .villain-rap { color: rgba(255,248,231,0.9); }
+
+  .villain-threat {
+    margin-top: 10px;
+    display: flex; gap: 3px;
+  }
+  .threat-pip {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,215,0,0.4);
+  }
+  .threat-pip.on { background: var(--yellow); border-color: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+  .villain-card:hover .threat-pip.on { background: var(--black); border-color: var(--black); }
+
+  /* ── WATCH ── */
+  #watch-section {
+    background: var(--yellow);
+    color: var(--black);
+    position: relative; overflow: hidden;
+  }
+  #watch-section .section-title { text-shadow: 4px 4px 0 var(--red); }
+  #watch-section .section-label { color: var(--black); }
+
+  .watch-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 40px;
+    align-items: center;
+  }
+
+  .watch-art {
+    position: relative;
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  .watch-svg-wrap {
+    filter: drop-shadow(12px 12px 0 var(--red)) drop-shadow(-2px -2px 0 var(--black));
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .watch-facts { list-style: none; }
+  .watch-facts li {
+    border-bottom: 3px solid var(--black);
+    padding: 14px 0;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .watch-facts li:last-child { border-bottom: none; }
+  .fact-icon { font-size: 22px; flex-shrink: 0; }
+  .fact-text h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .fact-text p { font-size: 13px; line-height: 1.5; opacity: 0.8; }
+
+  /* ── TIMELINE ── */
+  #timeline {
+    background: #111;
+    position: relative; overflow: hidden;
+  }
+  #timeline .section-title { color: var(--cream); text-shadow: 4px 4px 0 var(--yellow); }
+
+  .timeline-track {
+    position: relative;
+    margin-top: 60px;
+    padding-left: 0;
+  }
+  .timeline-track::before {
+    content: '';
+    position: absolute; left: 50%; top: 0; bottom: 0;
+    width: 5px;
+    background: repeating-linear-gradient(180deg, var(--yellow) 0, var(--yellow) 20px, transparent 20px, transparent 30px);
+    transform: translateX(-50%);
+  }
+
+  .t-entry {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0 0;
+    margin-bottom: 48px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .t-entry.visible { opacity: 1; transform: none; }
+
+  .t-entry:nth-child(odd)  .t-content { grid-column: 1; text-align: right; padding-right: 36px; }
+  .t-entry:nth-child(odd)  .t-dot     { grid-column: 2; }
+  .t-entry:nth-child(odd)  .t-empty   { grid-column: 3; }
+  .t-entry:nth-child(even) .t-content { grid-column: 3; padding-left: 36px; }
+  .t-entry:nth-child(even) .t-dot     { grid-column: 2; }
+  .t-entry:nth-child(even) .t-empty   { grid-column: 1; }
+
+  .t-dot {
+    display: flex; align-items: flex-start; justify-content: center;
+    padding-top: 4px;
+  }
+  .t-dot-inner {
+    width: 20px; height: 20px;
+    background: var(--yellow);
+    border: 4px solid var(--black);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--yellow);
+    flex-shrink: 0;
+  }
+  .t-year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; letter-spacing: 2px;
+    color: var(--yellow);
+    line-height: 1; margin-bottom: 4px;
+  }
+  .t-desc {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px; font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .t-detail { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+  /* ── CREATORS ── */
+  #creators {
+    background: var(--red);
+    color: var(--yellow);
+    position: relative; overflow: hidden;
+  }
+  #creators::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,215,0,0.15) 1px, transparent 1px);
+    background-size: 10px 10px;
+    pointer-events: none;
+  }
+  #creators .section-title { color: var(--yellow); text-shadow: 4px 4px 0 var(--black); }
+  #creators .section-label { color: rgba(255,215,0,0.6); }
+
+  .creators-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 5px solid var(--yellow);
+    margin-top: 40px;
+    box-shadow: 8px 8px 0 var(--black);
+  }
+  .creator-card {
+    border: 3px solid rgba(255,215,0,0.3);
+    padding: 36px 28px;
+    position: relative;
+  }
+  .creator-card:hover { background: rgba(0,0,0,0.15); }
+  .creator-initials {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px; line-height: 1;
+    color: rgba(255,215,0,0.15);
+    position: absolute;
+    top: 16px; right: 20px;
+    pointer-events: none;
+    letter-spacing: -4px;
+  }
+  .creator-role {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px; letter-spacing: 4px;
+    color: rgba(255,215,0,0.6);
+    margin-bottom: 8px;
+  }
+  .creator-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px; line-height: 1;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .creator-bio { font-size: 14px; line-height: 1.65; opacity: 0.85; }
+
+  /* ── QUOTE STRIP ── */
+  .quote-strip {
+    background: var(--black);
+    border-top: 5px solid var(--yellow);
+    border-bottom: 5px solid var(--yellow);
+    padding: 60px 24px;
+    text-align: center;
+  }
+  .quote-strip blockquote {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 5vw, 60px);
+    color: var(--yellow);
+    letter-spacing: 3px;
+    line-height: 1.1;
+    max-width: 900px;
+    margin: 0 auto 20px;
+    text-shadow: 4px 4px 0 var(--red);
+  }
+  .quote-strip cite {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px; letter-spacing: 4px;
+    color: var(--gray);
+  }
+
+  /* ── LEGACY ── */
+  #legacy { background: var(--cream); color: var(--black); }
+  #legacy .section-title { text-shadow: 4px 4px 0 var(--yellow); }
+  #legacy .section-label { color: var(--red); }
+
+  .legacy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 5px solid var(--black);
+    margin-top: 40px;
+    box-shadow: 8px 8px 0 var(--yellow);
+  }
+  .legacy-item {
+    border: 3px solid var(--black);
+    padding: 28px 22px;
+    position: relative;
+    background: var(--cream);
+    transition: background 0.2s;
+  }
+  .legacy-item:hover { background: var(--black); color: var(--cream); }
+  .legacy-item:hover .legacy-year { color: var(--yellow); }
+  .legacy-icon { font-size: 36px; margin-bottom: 12px; }
+  .legacy-year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px; color: var(--red);
+    margin-bottom: 4px;
+  }
+  .legacy-item h4 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700; font-size: 15px;
+    letter-spacing: 1px; margin-bottom: 8px;
+  }
+  .legacy-item p { font-size: 12px; line-height: 1.6; opacity: 0.75; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    border-top: 5px solid var(--yellow);
+    padding: 48px 24px;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--yellow);
+    letter-spacing: 6px;
+    text-shadow: 4px 4px 0 var(--red);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .footer-sub {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px; letter-spacing: 4px;
+    color: var(--gray);
+    margin-bottom: 24px;
+  }
+  .footer-links { display: flex; justify-content: center; gap: 0; margin-bottom: 32px; }
+  .footer-links a {
+    padding: 8px 20px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px; letter-spacing: 2px;
+    color: var(--yellow);
+    text-decoration: none;
+    border: 2px solid rgba(255,215,0,0.3);
+    margin-left: -2px;
+    transition: background 0.15s;
+  }
+  .footer-links a:hover { background: var(--yellow); color: var(--black); }
+  .footer-copy { font-size: 11px; color: var(--gray); letter-spacing: 1px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav ul { display: none; }
+    .panels-grid { grid-template-columns: 1fr; }
+    .panel.wide { grid-column: span 1; }
+    .villains-grid { grid-template-columns: repeat(2, 1fr); }
+    .watch-layout, .creators-grid, .radio-layout { grid-template-columns: 1fr; }
+    .legacy-grid { grid-template-columns: 1fr 1fr; }
+    .timeline-track::before { left: 20px; }
+    .t-entry { grid-template-columns: 40px 1fr; }
+    .t-entry:nth-child(odd)  .t-content,
+    .t-entry:nth-child(even) .t-content { grid-column: 2; text-align: left; padding-left: 20px; padding-right: 0; }
+    .t-entry:nth-child(odd)  .t-dot,
+    .t-entry:nth-child(even) .t-dot     { grid-column: 1; grid-row: 1; }
+    .t-entry:nth-child(odd)  .t-empty,
+    .t-entry:nth-child(even) .t-empty   { display: none; }
+  }
+  @media (max-width: 480px) {
+    .legacy-grid { grid-template-columns: 1fr; }
+    .villains-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">DICK TRACY</div>
+  <ul>
+    <li><a href="#about">ORIGIN</a></li>
+    <li><a href="#villains">ROGUES</a></li>
+    <li><a href="#watch-section">THE WATCH</a></li>
+    <li><a href="#radio">RADIO</a></li>
+    <li><a href="#timeline">HISTORY</a></li>
+    <li><a href="#legacy">LEGACY</a></li>
+  </ul>
+  <div class="nav-badge">EST. 1931</div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <!-- Rain -->
+  <div class="rain" id="rain"></div>
+
+  <!-- City Skyline -->
+  <svg class="skyline" viewBox="0 0 1200 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <g fill="rgba(255,215,0,0.06)">
+      <rect x="0" y="80" width="40" height="140"/>
+      <rect x="30" y="40" width="60" height="180"/>
+      <rect x="80" y="100" width="30" height="120"/>
+      <rect x="100" y="60" width="50" height="160"/>
+      <rect x="140" y="30" width="80" height="190"/>
+      <rect x="148" y="10" width="10" height="30"/>
+      <rect x="210" y="70" width="60" height="150"/>
+      <rect x="260" y="50" width="40" height="170"/>
+      <rect x="290" y="90" width="70" height="130"/>
+      <rect x="350" y="40" width="90" height="180"/>
+      <rect x="358" y="20" width="12" height="30"/>
+      <rect x="430" y="80" width="50" height="140"/>
+      <rect x="470" y="30" width="100" height="190"/>
+      <rect x="560" y="60" width="60" height="160"/>
+      <rect x="610" y="100" width="40" height="120"/>
+      <rect x="640" y="50" width="80" height="170"/>
+      <rect x="710" y="70" width="50" height="150"/>
+      <rect x="750" y="20" width="100" height="200"/>
+      <rect x="758" y="0" width="14" height="28"/>
+      <rect x="840" y="80" width="60" height="140"/>
+      <rect x="890" y="40" width="70" height="180"/>
+      <rect x="950" y="60" width="50" height="160"/>
+      <rect x="990" y="90" width="80" height="130"/>
+      <rect x="1060" y="50" width="60" height="170"/>
+      <rect x="1110" y="30" width="90" height="190"/>
+    </g>
+    <!-- Windows -->
+    <g fill="rgba(255,215,0,0.12)">
+      <rect x="145" y="45" width="6" height="6"/><rect x="155" y="45" width="6" height="6"/>
+      <rect x="145" y="60" width="6" height="6"/><rect x="155" y="60" width="6" height="6"/>
+      <rect x="145" y="75" width="6" height="6"/>
+      <rect x="356" y="55" width="6" height="6"/><rect x="366" y="55" width="6" height="6"/>
+      <rect x="356" y="70" width="6" height="6"/>
+      <rect x="756" y="30" width="6" height="6"/><rect x="766" y="30" width="6" height="6"/>
+      <rect x="756" y="45" width="6" height="6"/>
+    </g>
+  </svg>
+
+  <!-- Hat silhouette -->
+  <svg class="hero-hat" viewBox="0 0 320 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 160 Q160 20 300 160 Z" fill="currentColor"/>
+    <rect x="0" y="155" width="320" height="30" rx="5" fill="currentColor"/>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">America's Greatest Detective</div>
+    <div class="hero-title">DICK<br>TRACY</div>
+    <div class="hero-sub">CRIMESTOPPER</div>
+    <div class="hero-divider"></div>
+    <p class="hero-quote">"Crime does not pay." — The credo that launched nine decades of jaw-jutted, yellow-coated justice.</p>
+    <div class="hero-since">SINCE OCTOBER 4, 1931</div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    ◆ FLATFOOT FOILS FLATTOP IN RIVERSIDE SHOOTOUT &nbsp;◆ TWO-FACE TIPPED OFF — TRACY CLOSES IN &nbsp;◆ WATCH COMMUNICATOR TECH DECADES AHEAD OF ITS TIME &nbsp;◆ THE STRIP THAT PREDICTED THE SMARTPHONE &nbsp;◆ CHESTER GOULD'S MASTERPIECE MARKS 90+ YEARS &nbsp;◆ BIG BOY, THE BLANK, PRUNEFACE BEHIND BARS &nbsp;◆ DIET SMITH INDUSTRIES UNVEILS MAGNETIC SKYCAR &nbsp;◆ FLATFOOT FOILS FLATTOP IN RIVERSIDE SHOOTOUT &nbsp;◆ TWO-FACE TIPPED OFF — TRACY CLOSES IN &nbsp;◆ WATCH COMMUNICATOR TECH DECADES AHEAD OF ITS TIME &nbsp;◆ THE STRIP THAT PREDICTED THE SMARTPHONE &nbsp;◆ CHESTER GOULD'S MASTERPIECE MARKS 90+ YEARS &nbsp;◆ BIG BOY, THE BLANK, PRUNEFACE BEHIND BARS &nbsp;◆ DIET SMITH INDUSTRIES UNVEILS MAGNETIC SKYCAR &nbsp;&nbsp;
+  </div>
+</div>
+
+<!-- ABOUT / ORIGIN -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">Chapter 01</div>
+    <div class="section-title">THE ORIGIN<br>STORY</div>
+
+    <div class="panels-grid">
+
+      <div class="panel yellow-bg">
+        <span class="panel-num">01</span>
+        <div class="panel-caption">CREATOR</div>
+        <span class="panel-icon">✏️</span>
+        <h3>Chester Gould</h3>
+        <p>Born June 20, 1900 in Pawnee, Oklahoma. After years of rejection from the Chicago Tribune, Gould's 10th submission — a square-jawed detective — finally landed in October 1931.</p>
+      </div>
+
+      <div class="panel wide black-bg">
+        <span class="panel-num">02</span>
+        <div class="panel-caption">THE PITCH</div>
+        <h3>Plainclothes Tracy</h3>
+        <p style="margin-bottom:12px">The strip began as "Plainclothes Tracy," renamed Dick Tracy before launch. Gould wanted a comic that directly confronted gangster culture — inspired by Al Capone's stranglehold on Chicago.</p>
+        <div class="speech-bubble" style="color:#111">
+          "I'll give the public a detective who fights back — no more milk-and-water stuff. This cop shoots first and asks questions later."
+          <br><span style="font-size:11px;opacity:0.5;display:block;margin-top:6px">— Chester Gould, 1931</span>
+        </div>
+      </div>
+
+      <div class="panel tall" style="background:#1a0a00;color:var(--cream)">
+        <span class="panel-num">03</span>
+        <div class="panel-caption" style="background:var(--red);color:var(--yellow);border-color:var(--yellow)">WHO IS HE?</div>
+        <h3 style="color:var(--yellow);text-shadow:2px 2px 0 var(--red)">Dick<br>Tracy</h3>
+        <p style="margin-bottom:16px;color:rgba(255,248,231,0.8)">A plainclothes police detective in an unnamed American city. Incorruptible, tenacious, and endlessly inventive. Tracy set the template for every tough-cop procedural that followed.</p>
+        <div style="border-top:2px solid rgba(255,215,0,0.2);padding-top:16px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div>
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--yellow)">FIRST APP.</div>
+              <div style="font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:2px;color:var(--gray)">OCT 4, 1931</div>
+            </div>
+            <div>
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--yellow)">NEWSPAPERS</div>
+              <div style="font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:2px;color:var(--gray)">1,000+ AT PEAK</div>
+            </div>
+            <div>
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--yellow)">VILLAINS</div>
+              <div style="font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:2px;color:var(--gray)">OVER 100</div>
+            </div>
+            <div>
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--yellow)">YEARS</div>
+              <div style="font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:2px;color:var(--gray)">90+ & COUNTING</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <span class="panel-num">04</span>
+        <div class="panel-caption">THE LOOK</div>
+        <h3>Yellow Fedora & Square Jaw</h3>
+        <p>Gould gave Tracy a distinctive silhouette — yellow overcoat, yellow fedora, red tie — so readers could identify him at a glance, even in chaotic panel compositions.</p>
+      </div>
+
+      <div class="panel red-bg">
+        <span class="panel-num">05</span>
+        <div class="panel-caption">BY THE NUMBERS</div>
+        <div class="stat-big">90+</div>
+        <h3 style="color:var(--yellow);font-size:20px;margin-top:4px">Years in Print</h3>
+        <p style="color:rgba(255,215,0,0.8)">One of the longest-running American comic strips, still published today by Tribune Content Agency.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- VILLAINS -->
+<section id="villains">
+  <div class="container">
+    <div class="section-label" style="color:var(--red)">Chapter 02</div>
+    <div class="section-title">ROGUES<br>GALLERY</div>
+
+    <div class="villains-grid">
+
+      <div class="villain-card">
+        <span class="villain-mug">🎩</span>
+        <div class="villain-name">FLATTOP</div>
+        <div class="villain-alias">ALIAS: FLATTOP JONES SR.</div>
+        <p class="villain-rap">Hired hitman with a notoriously flat cranium. Became so popular readers wrote in to keep him alive. Gould killed him anyway — on a crowded subway.</p>
+        <div class="villain-threat">
+          <div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip on"></div>
+        </div>
+      </div>
+
+      <div class="villain-card">
+        <span class="villain-mug">😷</span>
+        <div class="villain-name">PRUNEFACE</div>
+        <div class="villain-alias">ALIAS: BOCHE</div>
+        <p class="villain-rap">Wartime saboteur with a grotesquely wrinkled face. One of the strip's most chilling wartime villains, inspired by WWII anxieties about enemy agents.</p>
+        <div class="villain-threat">
+          <div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip"></div>
+        </div>
+      </div>
+
+      <div class="villain-card">
+        <span class="villain-mug">🎭</span>
+        <div class="villain-name">THE BLANK</div>
+        <div class="villain-alias">ALIAS: FRANK REDRUM</div>
+        <p class="villain-rap">No face — literally. Wore a featureless flesh-colored mask concealing their true identity. One of the strip's most surreal and unsettling visual concepts.</p>
+        <div class="villain-threat">
+          <div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip"></div>
+        </div>
+      </div>
+
+      <div class="villain-card">
+        <span class="villain-mug">🧊</span>
+        <div class="villain-name">ICEBOX</div>
+        <div class="villain-alias">ALIAS: ICEBOX JONES</div>
+        <p class="villain-rap">A cold-blooded killer as calculating as his name suggests. His methodical approach to crime made him one of Tracy's most dangerous foes.</p>
+        <div class="villain-threat">
+          <div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip"></div><div class="threat-pip"></div>
+        </div>
+      </div>
+
+      <div class="villain-card">
+        <span class="villain-mug">🦷</span>
+        <div class="villain-name">BIG BOY</div>
+        <div class="villain-alias">ALIAS: ALPHONSE BIG BOY CAPRICE</div>
+        <p class="villain-rap">The original Dick Tracy villain — a Capone-inspired mob boss whose murder of Tracy's future father-in-law launched the entire strip.</p>
+        <div class="villain-threat">
+          <div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip on"></div>
+        </div>
+      </div>
+
+      <div class="villain-card">
+        <span class="villain-mug">🎪</span>
+        <div class="villain-name">MUMBLES</div>
+        <div class="villain-alias">ALIAS: MUMBLES MCGURK</div>
+        <p class="villain-rap">Spoke in an incomprehensible mumble, making interrogation comically impossible. Later adapted by Warren Beatty in the 1990 film, played by Dustin Hoffman.</p>
+        <div class="villain-threat">
+          <div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip on"></div><div class="threat-pip"></div><div class="threat-pip"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="margin-top:24px;font-size:12px;color:var(--gray);letter-spacing:2px;font-family:'Oswald',sans-serif">◆ THREAT LEVEL RATED 1–5 ◆ HOVER CARDS TO ACTIVATE DOSSIER ◆</p>
+  </div>
+</section>
+
+<!-- THE WATCH -->
+<section id="watch-section">
+  <div class="container">
+    <div class="section-label">Chapter 03</div>
+    <div class="section-title">THE WRIST<br>COMMUNICATOR</div>
+
+    <div class="watch-layout">
+      <div class="watch-art">
+        <div class="watch-svg-wrap">
+          <svg width="260" height="340" viewBox="0 0 260 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Band top -->
+            <rect x="80" y="0" width="100" height="60" rx="6" fill="#1a1200" stroke="#c8a200" stroke-width="4"/>
+            <rect x="94" y="14" width="8" height="32" rx="3" fill="#c8a200"/>
+            <rect x="110" y="14" width="8" height="32" rx="3" fill="#c8a200"/>
+            <rect x="126" y="14" width="8" height="32" rx="3" fill="#c8a200"/>
+            <!-- Watch body -->
+            <rect x="30" y="55" width="200" height="230" rx="18" fill="#0e0c00" stroke="#c8a200" stroke-width="5"/>
+            <rect x="42" y="67" width="176" height="206" rx="12" fill="#111500" stroke="#4a3800" stroke-width="2"/>
+            <!-- Screen -->
+            <rect x="52" y="77" width="156" height="186" rx="8" fill="#0d1a00" stroke="#2a2000" stroke-width="2"/>
+            <!-- Screen content -->
+            <text x="130" y="130" font-family="Courier New" font-size="38" font-weight="bold" fill="#90ff00" text-anchor="middle" filter="url(#glow)">09:42</text>
+            <text x="130" y="150" font-family="Courier New" font-size="11" fill="#90ff00" text-anchor="middle" opacity="0.6">MON  OCT 4</text>
+            <!-- Signal lines -->
+            <line x1="72" y1="180" x2="188" y2="180" stroke="rgba(144,255,0,0.15)" stroke-width="1"/>
+            <line x1="72" y1="190" x2="188" y2="190" stroke="rgba(144,255,0,0.1)" stroke-width="1"/>
+            <line x1="72" y1="200" x2="188" y2="200" stroke="rgba(144,255,0,0.08)" stroke-width="1"/>
+            <!-- Comm wave -->
+            <path d="M80 220 Q100 210 120 220 Q140 230 160 220 Q180 210 188 215" stroke="#90ff00" stroke-width="2" fill="none" opacity="0.5"/>
+            <!-- TRACY COMM text -->
+            <text x="130" y="248" font-family="Courier New" font-size="9" fill="#c8a200" text-anchor="middle" letter-spacing="4">TRACY-COMM</text>
+            <!-- Buttons -->
+            <rect x="50" y="290" width="46" height="18" rx="4" fill="#2a1e00" stroke="#c8a200" stroke-width="2"/>
+            <rect x="107" y="290" width="46" height="18" rx="4" fill="#2a1e00" stroke="#c8a200" stroke-width="2"/>
+            <rect x="164" y="290" width="46" height="18" rx="4" fill="#2a1e00" stroke="#c8a200" stroke-width="2"/>
+            <text x="73" y="302" font-family="Courier New" font-size="9" fill="#c8a200" text-anchor="middle">◀</text>
+            <text x="130" y="302" font-family="Courier New" font-size="9" fill="#c8a200" text-anchor="middle">◉</text>
+            <text x="187" y="302" font-family="Courier New" font-size="9" fill="#c8a200" text-anchor="middle">▶</text>
+            <!-- Corner screws -->
+            <circle cx="48" cy="68" r="5" fill="radial-gradient(circle, #c8a200, #5a4800)" stroke="#c8a200" stroke-width="1"/>
+            <circle cx="212" cy="68" r="5" fill="#7a6000" stroke="#c8a200" stroke-width="1"/>
+            <circle cx="48" cy="265" r="5" fill="#7a6000" stroke="#c8a200" stroke-width="1"/>
+            <circle cx="212" cy="265" r="5" fill="#7a6000" stroke="#c8a200" stroke-width="1"/>
+            <!-- Band bottom -->
+            <rect x="80" y="280" width="100" height="60" rx="6" fill="#1a1200" stroke="#c8a200" stroke-width="4"/>
+            <rect x="94" y="294" width="8" height="32" rx="3" fill="#c8a200"/>
+            <rect x="110" y="294" width="8" height="32" rx="3" fill="#c8a200"/>
+            <rect x="126" y="294" width="8" height="32" rx="3" fill="#c8a200"/>
+            <!-- Glow filter -->
+            <defs>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+          </svg>
+        </div>
+        <div style="margin-top:16px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:4px;color:var(--black);opacity:0.5">2-WAY WRIST TV · PATENT PENDING</div>
+      </div>
+
+      <ul class="watch-facts">
+        <li>
+          <span class="fact-icon">📅</span>
+          <div class="fact-text">
+            <h4>Introduced in 1946</h4>
+            <p>Chester Gould introduced the 2-Way Wrist Radio in January 1946 — the smartphone concept 61 years before the iPhone launched.</p>
+          </div>
+        </li>
+        <li>
+          <span class="fact-icon">📺</span>
+          <div class="fact-text">
+            <h4>Upgraded to Wrist TV — 1964</h4>
+            <p>Gould evolved the technology to include video calling, predicting FaceTime and video conferencing by nearly half a century.</p>
+          </div>
+        </li>
+        <li>
+          <span class="fact-icon">🛰️</span>
+          <div class="fact-text">
+            <h4>Wrist Computer — 1980s</h4>
+            <p>The device evolved again into a wrist-mounted computer, anticipating the Apple Watch and smartwatch revolution.</p>
+          </div>
+        </li>
+        <li>
+          <span class="fact-icon">💡</span>
+          <div class="fact-text">
+            <h4>Cited by Inventors</h4>
+            <p>Engineers at Motorola, Apple, and Samsung have cited Dick Tracy's wrist communicator as a direct inspiration for their wearable technology.</p>
+          </div>
+        </li>
+        <li>
+          <span class="fact-icon">⭐</span>
+          <div class="fact-text">
+            <h4>Cultural Icon</h4>
+            <p>The watch is considered one of the most prophetic inventions in pop culture history — a piece of fiction that literally shaped the future.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ON THE AIR -->
+<section id="radio" style="background:#1a0a00;color:var(--cream);position:relative;overflow:hidden;border-top:5px solid var(--yellow);border-bottom:5px solid var(--yellow)">
+  <div style="position:absolute;inset:0;background-image:radial-gradient(circle, rgba(255,215,0,0.05) 1px, transparent 1px);background-size:14px 14px;pointer-events:none"></div>
+  <div class="container" style="position:relative;z-index:2">
+    <div class="section-label">Chapter 03.5</div>
+    <div class="section-title" style="color:var(--yellow);text-shadow:4px 4px 0 var(--red)">ON THE<br>AIRWAVES</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:40px;align-items:center" class="radio-layout">
+
+      <!-- Vintage Radio SVG -->
+      <div style="display:flex;flex-direction:column;align-items:center">
+  <div id="radioPlayer" style="cursor:pointer;position:relative">
+    <svg width="320" height="340" viewBox="0 0 320 340" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(10px 10px 0 var(--red));transition:filter 0.3s">
+      <!-- Cabinet -->
+      <path d="M30 60 Q30 30 60 30 L260 30 Q290 30 290 60 L290 310 Q290 320 280 320 L40 320 Q30 320 30 310 Z" fill="#3d2410" stroke="#1a0a00" stroke-width="4"/>
+      <path d="M40 80 L280 80 M40 110 L280 110 M40 300 L280 300" stroke="#2a1808" stroke-width="1" opacity="0.6"/>
+      <path d="M60 50 Q160 35 260 50" stroke="#c8a200" stroke-width="2" fill="none" opacity="0.5"/>
+
+      <!-- Speaker grille -->
+      <rect x="60" y="90" width="200" height="110" rx="8" fill="#1a0a00" stroke="#c8a200" stroke-width="3"/>
+      <g id="speakerLines" stroke="#c8a200" stroke-width="2" opacity="0.7">
+        <line x1="70" y1="105" x2="250" y2="105"/>
+        <line x1="70" y1="120" x2="250" y2="120"/>
+        <line x1="70" y1="135" x2="250" y2="135"/>
+        <line x1="70" y1="150" x2="250" y2="150"/>
+        <line x1="70" y1="165" x2="250" y2="165"/>
+        <line x1="70" y1="180" x2="250" y2="180"/>
+      </g>
+
+      <!-- Center medallion -->
+      <circle cx="160" cy="145" r="22" fill="#3d2410" stroke="#c8a200" stroke-width="2"/>
+      <text x="160" y="150" font-family="Bebas Neue, sans-serif" font-size="14" fill="#c8a200" text-anchor="middle" letter-spacing="2">DT</text>
+
+      <!-- Tuning dial -->
+      <rect x="70" y="215" width="180" height="40" rx="4" fill="#0a0500" stroke="#c8a200" stroke-width="2"/>
+      <text x="85" y="232" font-family="Courier New" font-size="9" fill="#90ff00">540</text>
+      <text x="120" y="232" font-family="Courier New" font-size="9" fill="#90ff00">800</text>
+      <text x="155" y="232" font-family="Courier New" font-size="9" fill="#90ff00">1000</text>
+      <text x="195" y="232" font-family="Courier New" font-size="9" fill="#90ff00">1200</text>
+      <text x="230" y="232" font-family="Courier New" font-size="9" fill="#90ff00">1600</text>
+
+      <!-- Animated tuning needle -->
+      <line id="tuneNeedle" x1="80" y1="238" x2="80" y2="252" stroke="#ff3300" stroke-width="2" style="transition:none"/>
+
+      <!-- Knobs - VOL is now the play button -->
+      <g id="playKnob">
+        <circle cx="90" cy="285" r="18" fill="#1a0a00" stroke="#c8a200" stroke-width="3"/>
+        <circle cx="90" cy="285" r="3" fill="#c8a200"/>
+        <line x1="90" y1="270" x2="90" y2="278" stroke="#c8a200" stroke-width="2"/>
+        <text x="90" y="315" font-family="Oswald" font-size="8" fill="#c8a200" text-anchor="middle" letter-spacing="1">PLAY</text>
+      </g>
+
+      <g id="tuneKnob" style="cursor:pointer">
+  <circle cx="160" cy="285" r="18" fill="#1a0a00" stroke="#c8a200" stroke-width="3"/>
+  <circle cx="160" cy="285" r="3" fill="#c8a200"/>
+  <line x1="160" y1="280" x2="167" y2="273" stroke="#c8a200" stroke-width="2"/>
+  <text x="160" y="315" font-family="Oswald" font-size="8" fill="#c8a200" text-anchor="middle" letter-spacing="1">NEXT</text>
+</g>
+
+      <g id="bandKnob" style="cursor:pointer">
+  <circle cx="230" cy="285" r="18" fill="#1a0a00" stroke="#c8a200" stroke-width="3"/>
+  <circle cx="230" cy="285" r="3" fill="#c8a200"/>
+  <line x1="230" y1="280" x2="223" y2="273" stroke="#c8a200" stroke-width="2"/>
+  <text x="230" y="315" font-family="Oswald" font-size="8" fill="#c8a200" text-anchor="middle" letter-spacing="1">PREV</text>
+</g>
+
+      <!-- Glow overlay when playing -->
+      <circle id="onAirGlow" cx="160" cy="145" r="22" fill="none" stroke="#ff3300" stroke-width="3" opacity="0"/>
+    </svg>
+
+    <!-- Hidden audio element -->
+    <audio id="dtAudio" preload="none"></audio>
+  </div>
+  <div id="radioStatus" style="margin-top:16px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:4px;color:var(--yellow);opacity:0.6;transition:opacity 0.3s">◆ CLICK TO TUNE IN ◆</div>
+</div>
+
+      <!-- Broadcast Card + Facts -->
+      <div>
+        <!-- On Air card -->
+<div style="background:var(--black);border:4px solid var(--yellow);box-shadow:6px 6px 0 var(--red);padding:20px;margin-bottom:24px;position:relative">
+  <div style="position:absolute;top:-12px;left:16px;background:var(--red);color:var(--yellow);font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;padding:4px 12px;border:2px solid var(--yellow)">● ON AIR</div>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--yellow);letter-spacing:2px;margin-top:8px">DICK TRACY</div>
+  <div id="episodeTitle" style="font-family:'Oswald',sans-serif;font-size:13px;color:var(--cream);letter-spacing:2px;margin-bottom:4px;min-height:18px">EP 1 · TESS DISAPPEARS</div>
+  <div id="episodeDate" style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--gray);letter-spacing:2px;margin-bottom:12px">FEBRUARY 4, 1935 · MUTUAL BROADCASTING</div>
+  <div style="font-family:'Special Elite',cursive;font-size:13px;line-height:1.6;color:rgba(255,248,231,0.85)">
+    "Calling all cars... calling all cars... Dick Tracy is on the case..."
+  </div>
+  <!-- Episode picker -->
+  <div style="margin-top:16px;padding-top:12px;border-top:1px dashed rgba(255,215,0,0.3)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:2px;color:var(--gray)">EPISODE SELECT</span>
+      <span id="episodeCounter" style="font-family:'Courier New',monospace;font-size:10px;color:var(--yellow)">01 / 18</span>
+    </div>
+    <select id="episodePicker" style="width:100%;background:#1a0a00;color:var(--yellow);border:2px solid var(--yellow);font-family:'Special Elite',cursive;font-size:12px;padding:6px 8px;cursor:pointer">
+      <!-- populated by JS -->
+    </select>
+  </div>
+</div>
+
+        <!-- Facts -->
+        <ul style="list-style:none">
+          <li style="border-bottom:2px dashed rgba(255,215,0,0.25);padding:12px 0;display:flex;gap:12px;align-items:flex-start">
+            <span style="font-size:22px;flex-shrink:0">📻</span>
+            <div>
+              <h4 style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--yellow);margin-bottom:2px">Premiered Feb 4, 1934</h4>
+              <p style="font-size:13px;line-height:1.5;color:rgba(255,248,231,0.75)">Dick Tracy hit the airwaves on CBS just over two years after the strip's debut, eventually airing on Mutual, NBC Blue, and ABC across its 14-year run.</p>
+            </div>
+          </li>
+          <li style="border-bottom:2px dashed rgba(255,215,0,0.25);padding:12px 0;display:flex;gap:12px;align-items:flex-start">
+            <span style="font-size:22px;flex-shrink:0">🎙️</span>
+            <div>
+              <h4 style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--yellow);margin-bottom:2px">Multiple Voices of Tracy</h4>
+              <p style="font-size:13px;line-height:1.5;color:rgba(255,248,231,0.75)">Bob Burlen, Ned Wever, Matt Crowley, and Barry Thomson all took turns voicing the square-jawed detective across the show's various network runs.</p>
+            </div>
+          </li>
+          <li style="border-bottom:2px dashed rgba(255,215,0,0.25);padding:12px 0;display:flex;gap:12px;align-items:flex-start">
+            <span style="font-size:22px;flex-shrink:0">🥣</span>
+            <div>
+              <h4 style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--yellow);margin-bottom:2px">Sponsored by Quaker Oats</h4>
+              <p style="font-size:13px;line-height:1.5;color:rgba(255,248,231,0.75)">Quaker Puffed Wheat and Puffed Rice sponsored the show for years, offering mail-away Dick Tracy decoder rings, badges, and secret-service kits to young listeners.</p>
+            </div>
+          </li>
+          <li style="padding:12px 0;display:flex;gap:12px;align-items:flex-start">
+            <span style="font-size:22px;flex-shrink:0">👥</span>
+            <div>
+              <h4 style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--yellow);margin-bottom:2px">Junior Crimestoppers</h4>
+              <p style="font-size:13px;line-height:1.5;color:rgba(255,248,231,0.75)">The radio show launched the "Dick Tracy Secret Service Patrol" — a real-world kids' club that taught safety, citizenship, and crimestopper ethics to millions.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-strip">
+  <blockquote>"CRIME DOES NOT PAY"</blockquote>
+  <cite>— THE MOTTO OF DICK TRACY, REPEATED IN EVERY STRIP SINCE 1931</cite>
+</div>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="container">
+    <div class="section-label" style="color:var(--yellow);opacity:0.7">Chapter 04</div>
+    <div class="section-title">90 YEARS<br>OF JUSTICE</div>
+
+    <div class="timeline-track" id="timelineTrack">
+
+      <div class="t-entry">
+        <div class="t-content">
+          <div class="t-year">1931</div>
+          <div class="t-desc">The Strip Debuts</div>
+          <div class="t-detail">Dick Tracy premieres in the Detroit Mirror and New York Daily News on October 4. Big Boy commits his first crime. America gets its detective.</div>
+        </div>
+        <div class="t-dot"><div class="t-dot-inner"></div></div>
+        <div class="t-empty"></div>
+      </div>
+
+      <div class="t-entry">
+        <div class="t-content">
+          <div class="t-year">1937</div>
+          <div class="t-desc">Radio Comes Calling</div>
+          <div class="t-detail">Dick Tracy hits the airwaves. The radio serial runs for a decade, bringing the detective's voice to millions of American households.</div>
+        </div>
+        <div class="t-dot"><div class="t-dot-inner"></div></div>
+        <div class="t-empty"></div>
+      </div>
+
+      <div class="t-entry">
+        <div class="t-content">
+          <div class="t-year">1945</div>
+          <div class="t-desc">Flattop's Reign & Demise</div>
+          <div class="t-detail">Flattop Jones becomes the strip's most popular villain. Reader mail begs Gould to spare him. Gould drowns him anyway. Moral of the story: crime still doesn't pay.</div>
+        </div>
+        <div class="t-dot"><div class="t-dot-inner"></div></div>
+        <div class="t-empty"></div>
+      </div>
+
+      <div class="t-entry">
+        <div class="t-content">
+          <div class="t-year">1946</div>
+          <div class="t-desc">The Wrist Radio Appears</div>
+          <div class="t-detail">Gould introduces the 2-Way Wrist Radio — the most prophetic gadget in comics history. Engineers and inventors would cite it for generations.</div>
+        </div>
+        <div class="t-dot"><div class="t-dot-inner"></div></div>
+        <div class="t-empty"></div>
+      </div>
+
+      <div class="t-entry">
+        <div class="t-content">
+          <div class="t-year">1967</div>
+          <div class="t-desc">Chester Gould Steps Back</div>
+          <div class="t-detail">After nearly four decades as sole creator, Gould begins transitioning responsibilities. His legacy: the definitive American detective comic and the language of crime noir.</div>
+        </div>
+        <div class="t-dot"><div class="t-dot-inner"></div></div>
+        <div class="t-empty"></div>
+      </div>
+
+      <div class="t-entry">
+        <div class="t-content">
+          <div class="t-year">1990</div>
+          <div class="t-desc">Warren Beatty's Film</div>
+          <div class="t-detail">Warren Beatty produces, directs, and stars in the blockbuster Dick Tracy film. Madonna, Al Pacino, and Dustin Hoffman join. A visual masterpiece of primary colors and comic-panel cinematography.</div>
+        </div>
+        <div class="t-dot"><div class="t-dot-inner"></div></div>
+        <div class="t-empty"></div>
+      </div>
+
+      <div class="t-entry">
+        <div class="t-content">
+          <div class="t-year">2011</div>
+          <div class="t-desc">80th Anniversary</div>
+          <div class="t-detail">Dick Tracy marks eight decades of publication — one of the longest-running American comic strips in history. New storylines, classic characters, same yellow hat.</div>
+        </div>
+        <div class="t-dot"><div class="t-dot-inner"></div></div>
+        <div class="t-empty"></div>
+      </div>
+
+      <div class="t-entry">
+        <div class="t-content">
+          <div class="t-year">TODAY</div>
+          <div class="t-desc">Still on the Case</div>
+          <div class="t-detail">Dick Tracy continues to run in newspapers and online. The strip that launched crime comics, predicted the smartphone, and gave us the square jaw of justice still publishes — every single day.</div>
+        </div>
+        <div class="t-dot"><div class="t-dot-inner"></div></div>
+        <div class="t-empty"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CREATORS -->
+<section id="creators">
+  <div class="container">
+    <div class="section-label">Chapter 05</div>
+    <div class="section-title">THE MEN<br>BEHIND THE BADGE</div>
+
+    <div class="creators-grid">
+      <div class="creator-card">
+        <div class="creator-initials">CG</div>
+        <div class="creator-role">Creator · Writer · Artist</div>
+        <div class="creator-name">Chester Gould</div>
+        <p class="creator-bio">Born in Pawnee, Oklahoma in 1900, Chester Gould spent years submitting strip ideas to the Chicago Tribune before hitting gold. He wrote and drew Dick Tracy from 1931 to 1977 — 46 consecutive years — creating over 100 villains, inventing the wrist communicator, and defining the visual language of crime comics. Gould's bold black-ink style, influenced by German Expressionism, made Dick Tracy instantly recognizable and infinitely imitated. He passed away in 1985, leaving behind one of the most enduring characters in American popular culture.</p>
+      </div>
+      <div class="creator-card">
+        <div class="creator-initials">MC</div>
+        <div class="creator-role">Current Creative Team Lead</div>
+        <div class="creator-name">Mike Curtis & Joe Staton</div>
+        <p class="creator-bio">Writer Mike Curtis and artist Joe Staton have steered Dick Tracy since 2011, bringing a deep respect for Gould's legacy alongside fresh storylines that honor nine decades of history. Staton's artwork channels Gould's bold lines while adding his own dynamic energy to chase scenes and confrontations. Under their stewardship, the strip has introduced modern technology — including actual smartphones — while never losing the timeless yellow-coat silhouette that defines Dick Tracy for every generation of reader.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEGACY -->
+<section id="legacy">
+  <div class="container">
+    <div class="section-label">Chapter 06</div>
+    <div class="section-title">THE LEGACY</div>
+
+    <div class="legacy-grid">
+
+      <div class="legacy-item">
+        <div class="legacy-icon">📺</div>
+        <div class="legacy-year">1950s</div>
+        <h4>Television Series</h4>
+        <p>Dick Tracy moves to television with Ralph Byrd reprising his film role, bringing the yellow-hat detective to the new medium of American broadcast TV.</p>
+      </div>
+
+      <div class="legacy-item">
+        <div class="legacy-icon">🎮</div>
+        <div class="legacy-year">1990</div>
+        <h4>Video Games</h4>
+        <p>Multiple video game adaptations across NES, Sega Genesis, and Game Boy introduced Dick Tracy to a new generation of players in the wake of Beatty's blockbuster film.</p>
+      </div>
+
+      <div class="legacy-item">
+        <div class="legacy-icon">🎬</div>
+        <div class="legacy-year">1990</div>
+        <h4>Warren Beatty Film</h4>
+        <p>Produced on a $46M budget, the film won three Academy Awards including Best Original Song (Sooner or Later by Stephen Sondheim, performed by Madonna).</p>
+      </div>
+
+      <div class="legacy-item">
+        <div class="legacy-icon">⌚</div>
+        <div class="legacy-year">2015</div>
+        <h4>Apple Watch Launch</h4>
+        <p>Apple's Phil Schiller directly referenced Dick Tracy's wrist communicator when introducing the Apple Watch — 69 years after Gould drew the concept.</p>
+      </div>
+
+      <div class="legacy-item">
+        <div class="legacy-icon">🏆</div>
+        <div class="legacy-year">1995</div>
+        <h4>Comics Hall of Fame</h4>
+        <p>Chester Gould inducted into the Will Eisner Comic Industry Award Hall of Fame. Dick Tracy recognized as a foundational work of American sequential art.</p>
+      </div>
+
+      <div class="legacy-item">
+        <div class="legacy-icon">📰</div>
+        <div class="legacy-year">ONGOING</div>
+        <h4>Still in Print</h4>
+        <p>One of only a handful of pre-WWII comic strips still in active daily publication, Dick Tracy endures as a testament to Gould's unshakeable creation.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <span class="footer-logo">DICK TRACY</span>
+    <div class="footer-sub">THE ETERNAL DETECTIVE · OCTOBER 4, 1931 — PRESENT</div>
+    <div class="footer-links">
+      <a href="#about">ORIGIN</a>
+      <a href="#villains">ROGUES</a>
+      <a href="#watch-section">THE WATCH</a>
+      <a href="#timeline">HISTORY</a>
+      <a href="#creators">CREATORS</a>
+      <a href="#legacy">LEGACY</a>
+    </div>
+    <div class="footer-copy">
+      A tribute to Chester Gould (1900–1985) and his immortal creation.<br>
+      Dick Tracy is a trademark of Tribune Content Agency. This is a fan tribute page.
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Generate rain
+  const rain = document.getElementById('rain');
+  for (let i = 0; i < 60; i++) {
+    const span = document.createElement('span');
+    span.style.cssText = `
+      left: ${Math.random() * 100}%;
+      height: ${40 + Math.random() * 80}px;
+      animation-duration: ${1.5 + Math.random() * 3}s;
+      animation-delay: ${Math.random() * 4}s;
+      opacity: ${0.05 + Math.random() * 0.2};
+    `;
+    rain.appendChild(span);
+  }
+
+  // Timeline intersection observer
+  const entries = document.querySelectorAll('.t-entry');
+  const obs = new IntersectionObserver((els) => {
+    els.forEach((el, i) => {
+      if (el.isIntersecting) {
+        setTimeout(() => el.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.15 });
+  entries.forEach(e => obs.observe(e));
+
+  // Smooth scroll for all anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Radio player — Dick Tracy Old Time Radio
+const episodes = [
+  { file: "350204_Tess_Disappears.mp3",            title: "TESS DISAPPEARS",            date: "FEB 4, 1935 · AUDITION" },
+  { file: "380208_Black_Pearl_of_Osirus.mp3",      title: "BLACK PEARL OF OSIRIS",      date: "FEB 8, 1938" },
+  { file: "380209_Pat_Goes_Overboard.mp3",         title: "PAT GOES OVERBOARD",         date: "FEB 9, 1938" },
+  { file: "380210_Mystery_in_the_Hotel.mp3",       title: "MYSTERY IN THE HOTEL",       date: "FEB 10, 1938" },
+  { file: "380211_Dick_Shot.mp3",                  title: "DICK SHOT",                  date: "FEB 11, 1938" },
+  { file: "380214_Dick_Gets_Ring_of_Osiris.mp3",   title: "DICK GETS RING OF OSIRIS",   date: "FEB 14, 1938" },
+  { file: "380214_Pat_Goes_Overboard.mp3",         title: "PAT GOES OVERBOARD (PT II)", date: "FEB 14, 1938" },
+  { file: "380215_Dick_Finds_Black_Pearl.mp3",     title: "DICK FINDS THE BLACK PEARL", date: "FEB 15, 1938" },
+  { file: "380216_An_Agent_Is_Murdered.mp3",       title: "AN AGENT IS MURDERED",       date: "FEB 16, 1938" },
+  { file: "380217_Going_After_The_Ring.mp3",       title: "GOING AFTER THE RING",       date: "FEB 17, 1938" },
+  { file: "380218_Dick_Captures_The_Gang.mp3",     title: "DICK CAPTURES THE GANG",     date: "FEB 18, 1938" },
+  { file: "380221_Pat_Is_Hypnotized.mp3",          title: "PAT IS HYPNOTIZED",          date: "FEB 21, 1938" },
+  { file: "380222_Dick_Is_Captured.mp3",           title: "DICK IS CAPTURED",           date: "FEB 22, 1938" },
+  { file: "380223_Dick_Escapes.mp3",               title: "DICK ESCAPES",               date: "FEB 23, 1938" },
+  { file: "380224_Junior_Kidnapped.mp3",           title: "JUNIOR KIDNAPPED",           date: "FEB 24, 1938" },
+  { file: "380225_Junior_Escapes.mp3",             title: "JUNIOR ESCAPES",             date: "FEB 25, 1938" },
+  { file: "380307_Case_of_the_Firebug_Murders.mp3",title: "THE FIREBUG MURDERS",        date: "MAR 7, 1938" },
+  { file: "380411_Mounties_at_Pitchblend.mp3",     title: "MOUNTIES AT PITCHBLEND",     date: "APR 11, 1938" }
+];
+
+const radioPlayer = document.getElementById('radioPlayer');
+const dtAudio = document.getElementById('dtAudio');
+const tuneNeedle = document.getElementById('tuneNeedle');
+const onAirGlow = document.getElementById('onAirGlow');
+const radioStatus = document.getElementById('radioStatus');
+const speakerLines = document.getElementById('speakerLines');
+const episodeTitle = document.getElementById('episodeTitle');
+const episodeDate = document.getElementById('episodeDate');
+const episodeCounter = document.getElementById('episodeCounter');
+const episodePicker = document.getElementById('episodePicker');
+const tuneKnob = document.getElementById('tuneKnob');
+const bandKnob = document.getElementById('bandKnob');
+
+let currentEp = 0;
+let isPlaying = false;
+
+// Populate dropdown
+episodes.forEach((ep, i) => {
+  const opt = document.createElement('option');
+  opt.value = i;
+  opt.textContent = `EP ${String(i + 1).padStart(2, '0')} · ${ep.title}`;
+  episodePicker.appendChild(opt);
+});
+
+function loadEpisode(index, autoplay = false) {
+  currentEp = (index + episodes.length) % episodes.length;
+  const ep = episodes[currentEp];
+  dtAudio.src = `audio/${ep.file}`;
+  episodeTitle.textContent = `EP ${String(currentEp + 1).padStart(2, '0')} · ${ep.title}`;
+  episodeDate.textContent = `${ep.date} · MUTUAL BROADCASTING`;
+  episodeCounter.textContent = `${String(currentEp + 1).padStart(2, '0')} / ${String(episodes.length).padStart(2, '0')}`;
+  episodePicker.value = currentEp;
+  if (autoplay) dtAudio.play().catch(err => console.error('Autoplay blocked:', err));
+}
+
+// Initial load
+loadEpisode(0);
+
+// Click radio body (excluding knob controls) to play/pause
+radioPlayer.addEventListener('click', (e) => {
+  // ignore clicks on knobs — they have their own handlers
+  if (e.target.closest('#tuneKnob') || e.target.closest('#bandKnob')) return;
+  if (isPlaying) {
+    dtAudio.pause();
+  } else {
+    dtAudio.play().catch(err => {
+      radioStatus.textContent = '◆ BROADCAST UNAVAILABLE ◆';
+      console.error('Audio failed:', err);
+    });
+  }
+});
+
+// NEXT knob
+tuneKnob.addEventListener('click', (e) => {
+  e.stopPropagation();
+  loadEpisode(currentEp + 1, isPlaying);
+});
+
+// PREV knob
+bandKnob.addEventListener('click', (e) => {
+  e.stopPropagation();
+  loadEpisode(currentEp - 1, isPlaying);
+});
+
+// Dropdown picker
+episodePicker.addEventListener('change', (e) => {
+  loadEpisode(parseInt(e.target.value, 10), isPlaying);
+});
+
+dtAudio.addEventListener('play', () => {
+  isPlaying = true;
+  radioStatus.textContent = '◆ NOW BROADCASTING ◆';
+  radioStatus.style.opacity = '1';
+  onAirGlow.style.transition = 'opacity 1s';
+  let pulse = 0;
+  window.radioPulse = setInterval(() => {
+    pulse = (pulse + 1) % 2;
+    onAirGlow.setAttribute('opacity', pulse ? '0.8' : '0.2');
+  }, 600);
+  window.speakerWiggle = setInterval(() => {
+    speakerLines.setAttribute('opacity', 0.4 + Math.random() * 0.5);
+  }, 120);
+});
+
+dtAudio.addEventListener('pause', () => {
+  isPlaying = false;
+  radioStatus.textContent = '◆ CLICK TO TUNE IN ◆';
+  clearInterval(window.radioPulse);
+  clearInterval(window.speakerWiggle);
+  onAirGlow.setAttribute('opacity', '0');
+  speakerLines.setAttribute('opacity', '0.7');
+});
+
+dtAudio.addEventListener('timeupdate', () => {
+  if (dtAudio.duration) {
+    const progress = dtAudio.currentTime / dtAudio.duration;
+    const x = 80 + progress * 160;
+    tuneNeedle.setAttribute('x1', x);
+    tuneNeedle.setAttribute('x2', x);
+  }
+});
+
+// Auto-advance to next episode when one ends
+dtAudio.addEventListener('ended', () => {
+  tuneNeedle.setAttribute('x1', 80);
+  tuneNeedle.setAttribute('x2', 80);
+  loadEpisode(currentEp + 1, true);
+});
+  });
+</script>
+
+</body>
+</html>
